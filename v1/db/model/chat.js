@@ -1,19 +1,26 @@
-const mongoose=require('../connection');
-const Schema=mongoose.Schema;
+const mongoose = require('../connection');
+const Schema = mongoose.Schema;
 
 
 
-var msgObject=new Schema({
-    sender:{},
-    time:{type:Date},
-    text:{type:String}
+var msgObject = new Schema({
+    sender: {},
+    time: {
+        type: Date
+    },
+    text: {
+        type: String
+    }
 })
 
-var chat=new Schema({
-'user_id':{},
-'support_id':{},
-'texts':[msgObject],
+var chat = new Schema({
+    'user_id': {},
+    'support_id': {},
+    'texts': [msgObject],
+    'creationDate': {
+        type: Date
+    }
 });
 
-var chatCollection=mongoose.model('chatCollection',chat);
-module.exports=chatCollection;
+var chatCollection = mongoose.model('chatCollection', chat);
+module.exports = chatCollection;

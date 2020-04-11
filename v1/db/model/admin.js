@@ -1,13 +1,19 @@
-const mongoose=require('../connection');
-const Schema=mongoose.Schema;
+const mongoose = require('../connection');
+const Schema = mongoose.Schema;
 
-var admin=new Schema({
-'name':{type:String},
-'password':{type:String},
-'role':'admin',
-'rights':[],
-
+var admin = new Schema({
+    'name': {
+        type: String
+    },
+    'password': {
+        type: String
+    },
+    'role': 'admin',
+    'rights': [],
+    'creationDate': {
+        type: Date
+    }
 });
 
-var adminCollection=mongoose.model('adminCollection',admin);
-module.exports=adminCollection;
+var adminCollection = mongoose.model('adminCollection', admin);
+module.exports = adminCollection;

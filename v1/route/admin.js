@@ -9,13 +9,6 @@ console.log('request is:',adminObject);
 // adminOperations.add(adminObject,res);
 })
 
-route.post('/adminlogin',(req,res)=>{                                       
-    console.log('inside post adminlogin');
-    console.log(req.body);
-    var adminObject = req.body;
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.search(adminObject,res);
- })
 
 route.post('/userRegister',(req,res)=>{
     console.log('Registering User');
@@ -49,5 +42,21 @@ route.post('/removeSupport',(req,res)=>{
     // adminOperations.add(adminObject,res);
     })
 
+route.post('/viewChat',(req,res)=>{
+    console.log('adding support');
+    var adminObject=req.body;
+    console.log('request is:',adminObject);
+    // var adminOperations=require('../db/helpers/adminOperations');
+    // adminOperations.add(adminObject,res);
+    })
 
-module.exports=route;
+route.post('/viewProfileDetails',(req,res)=>{
+  console.log('adding support');
+  var adminObject=req.body;
+  console.log('request is:',adminObject);
+  // var adminOperations=require('../db/helpers/adminOperations');
+  // adminOperations.add(adminObject,res);
+    })
+
+
+module.export=route;

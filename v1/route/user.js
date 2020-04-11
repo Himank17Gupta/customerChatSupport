@@ -2,14 +2,6 @@ var express=require('express');
 var route=express.Router();
 
 
-route.post('/userLogin',(req,res)=>{                                       
-    console.log('inside post userlogin');
-    console.log(req.body);
-    var adminObject = req.body;
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.search(adminObject,res);
- })
-
  
 route.post('/userLogout',(req,res)=>{
     console.log('logging out user');
