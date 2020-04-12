@@ -6,6 +6,25 @@ const userCollection = require('../model/user');
 const socketOperations = {
 
 
+    onConnectSetSocketID() {
+
+    },
+    getAllActiveSupport() {
+
+    },
+    getSupportWithMinConnectedUsers() {
+
+    },
+    mapSocketIdwithUserId() {
+
+    },
+    establishConnectionIandJ() {
+
+    },
+    onDisconnectRemoveSocketID() {
+
+    }
+
 
 }
 

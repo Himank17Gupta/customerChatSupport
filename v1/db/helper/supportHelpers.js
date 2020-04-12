@@ -5,6 +5,26 @@ const userCollection = require('../model/user');
 
 const supportOperations = {
 
+    search(Object, res) {
+        console.log('searching support');
+        adminCollection.findOne({
+            'userid': Object.userid
+        }, (err, doc) => {
+            if (err) {
+                console.log('err is :', err);
+                //   res.send('Invalid User Credentials');
+            } else if (doc) {
+                if (doc.password == reqObject.password) {
+                    res.send(doc);
+                } else {
+                    //res.send('Invalid User Credentials');
+                }
+            } else {
+                //  res.send('Invalid User Credentials');
+            }
+        });
+    },
+
     getAllActiveSupport(Object, res) {
         supportCollection.find({
             'isActiveNow': true

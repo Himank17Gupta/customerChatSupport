@@ -34,7 +34,11 @@ var user = new Schema({
     },
     'creationDate': {
         type: Date
-    }
+    },
+    'socketId': {
+        type: String,
+        default: null
+    },
 });
 
 var userCollection = mongoose.model('userCollection', user);

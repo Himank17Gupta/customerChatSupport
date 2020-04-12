@@ -36,7 +36,11 @@ var support = new Schema({
     },
     'creationDate': {
         type: Date
-    }
+    },
+    'socketId': {
+        type: String,
+        default: null
+    },
 });
 
 var supportCollection = mongoose.model('supportCollection', support);
