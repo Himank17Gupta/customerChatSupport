@@ -20,7 +20,9 @@ var user = new Schema({
     'password': {
         type: String
     },
-    'role': 'customer',
+    'role': {
+        type: String
+    },
     'rights': [],
     'ratings': [userRating],
     'chats': [{

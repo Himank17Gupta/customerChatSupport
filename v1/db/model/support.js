@@ -20,7 +20,9 @@ var support = new Schema({
     'password': {
         type: String
     },
-    'role': 'support',
+    'role': {
+        type: String
+    },
     'rights': [],
     'ratings': [rating],
     'userQueue': [{

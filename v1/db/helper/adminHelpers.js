@@ -7,6 +7,8 @@ const adminOperations = {
 
     addAdmin(Object, res) {
         console.log('adding admin');
+        Object.role = 'admin';
+        Object.creationDate = Date.now();
         adminCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
@@ -45,19 +47,20 @@ const adminOperations = {
     search(Object, res) {
         console.log('searching admin');
         adminCollection.findOne({
-            'userid': Object.userid
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
-                //   res.send('Invalid User Credentials');
+                res.send('Invalid User Credentials');
             } else if (doc) {
-                if (doc.password == reqObject.password) {
+                if (doc.password == Object.password) {
                     res.send(doc);
+                    //return doc;
                 } else {
-                    //res.send('Invalid User Credentials');
+                    res.send('Invalid User Credentials');
                 }
             } else {
-                //  res.send('Invalid User Credentials');
+                res.send('Invalid User Credentials');
             }
         });
     },
@@ -86,7 +89,7 @@ const adminOperations = {
     deleteAdmin(Object, res) {
         console.log('doing admin delete');
         adminCollection.deleteOne({
-            userid: Object.userid
+            name: Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -101,7 +104,7 @@ const adminOperations = {
     deleteSupport(Object, res) {
         console.log('doing support delete');
         adminCollection.deleteOne({
-            userid: Object.userid
+            name: Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -116,7 +119,7 @@ const adminOperations = {
     deleteUser(Object, res) {
         console.log('doing user delete');
         adminCollection.deleteOne({
-            userid: Object.userid
+            name: Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');

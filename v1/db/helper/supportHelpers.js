@@ -8,14 +8,15 @@ const supportOperations = {
     search(Object, res) {
         console.log('searching support');
         adminCollection.findOne({
-            'userid': Object.userid
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
                 //   res.send('Invalid User Credentials');
             } else if (doc) {
-                if (doc.password == reqObject.password) {
-                    res.send(doc);
+                if (doc.password == Object.password) {
+                    //res.send(doc);
+                    return doc;
                 } else {
                     //res.send('Invalid User Credentials');
                 }

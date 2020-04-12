@@ -5,8 +5,8 @@ route.post('/addadmin', (req, res) => {
     console.log('adding admin');
     var Object = req.body;
     console.log('request is:', Object);
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.add(Object,res);
+    var adminOperations = require("../db/helper/adminHelpers");
+    adminOperations.addAdmin(Object, res);
 })
 
 
@@ -65,4 +65,4 @@ route.post('/updateRoleRights', (req, res) => {
 })
 
 
-module.export = route;
+module.exports = route;

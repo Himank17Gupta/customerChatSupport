@@ -1,5 +1,6 @@
 var app = require('express')();
-var io = require('socket.io')(app);
+var io = require('socket.io')(server);
+
 const PORT = process.env.PORT || 1234;
 var bodyParser = require('body-parser');
 const socketOperations = require('./v1/db/helper/socketHelpers');
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
 	console.log('request on server is :', req.method);
 	res.send('chat service api started');
 });
-app.get('/auth', require('./v1/route/authservice'));
+app.use('/auth', require('./v1/route/authservice'));
 app.use('/admin', require('./v1/route/admin'));
 app.use('/user', require('./v1/route/user'));
 app.use('/support', require('./v1/route/support'));
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 
 })
 
-app.listen(PORT, () => {
+var server = app = app.listen(PORT, () => {
 	console.log("Connected to port:" + PORT);
 })
 module.exports = io;

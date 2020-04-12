@@ -8,7 +8,9 @@ var admin = new Schema({
     'password': {
         type: String
     },
-    'role': 'admin',
+    'role': {
+        type: String
+    },
     'rights': [],
     'creationDate': {
         type: Date

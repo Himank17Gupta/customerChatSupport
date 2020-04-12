@@ -8,14 +8,15 @@ const userOperations = {
     search(Object, res) {
         console.log('searching user');
         adminCollection.findOne({
-            'userid': Object.userid
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
                 //   res.send('Invalid User Credentials');
             } else if (doc) {
-                if (doc.password == reqObject.password) {
-                    res.send(doc);
+                if (doc.password == Object.password) {
+                    //res.send(doc);
+                    return doc;
                 } else {
                     //res.send('Invalid User Credentials');
                 }
@@ -28,7 +29,7 @@ const userOperations = {
     isReconnect(Object, res) {
         console.log('is Reconnect');
         userCollection.findOne({
-            'userid': Object.userid
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 res.json('Something went Wrong');
