@@ -5,9 +5,9 @@ const userCollection = require('../model/user');
 
 const adminOperations = {
 
-    addAdmin(adminObject, res) {
+    addAdmin(Object, res) {
         console.log('adding admin');
-        adminCollection.create(adminObject, err => {
+        adminCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
                 console.log('Error During Add ', err);
@@ -17,9 +17,9 @@ const adminOperations = {
         })
     },
 
-    addSupport(adminObject, res) {
+    addSupport(Object, res) {
         console.log('adding support');
-        supportCollection.create(adminObject, err => {
+        supportCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
                 console.log('Error During Add ', err);
@@ -29,9 +29,9 @@ const adminOperations = {
         })
     },
 
-    addUser(adminObject, res) {
+    addUser(Object, res) {
         console.log('adding user');
-        userCollection.create(adminObject, err => {
+        userCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
                 console.log('Error During Add ', err);
@@ -41,25 +41,31 @@ const adminOperations = {
         })
     },
 
-    getProfileDetails(adminObject, res) {
+    getProfileDetails(Object, res) {
         console.log('getting profile details');
         //
         //
         //
     },
 
-    getChatRecord(adminObject, res) {
+    getChatRecord(Object, res) {
         console.log('getting chat record');
         //
         //
         //
     },
 
+    updateRoleandRights(Object, res) {
+        console.log('updating roles and rights');
+        //
+        //
+        //
+    },
 
-    deleteAdmin(adminObject, res) {
+    deleteAdmin(Object, res) {
         console.log('doing admin delete');
         adminCollection.deleteOne({
-            userid: adminObject.userid
+            userid: Object.userid
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -71,10 +77,10 @@ const adminOperations = {
 
     },
 
-    deleteSupport(adminObject, res) {
+    deleteSupport(Object, res) {
         console.log('doing support delete');
         adminCollection.deleteOne({
-            userid: adminObject.userid
+            userid: Object.userid
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -86,10 +92,10 @@ const adminOperations = {
 
     },
 
-    deleteUser(adminObject, res) {
+    deleteUser(Object, res) {
         console.log('doing user delete');
         adminCollection.deleteOne({
-            userid: adminObject.userid
+            userid: Object.userid
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
