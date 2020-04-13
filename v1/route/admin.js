@@ -30,16 +30,16 @@ route.post('/removeUser', (req, res) => {
     console.log('adding admin');
     var Object = req.body;
     console.log('request is:', Object);
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.add(Object,res);
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.deleteUser(Object, res);
 })
 
 route.post('/removeSupport', (req, res) => {
     console.log('adding support');
     var Object = req.body;
     console.log('request is:', Object);
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.add(Object,res);
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.deleteSupport(Object, res);
 })
 
 route.post('/viewChat', (req, res) => {
@@ -58,10 +58,11 @@ route.post('/viewProfileDetails', (req, res) => {
     // adminOperations.add(Object,res);
 })
 
-route.post('/updateRoleRights', (req, res) => {
+route.post('/updateRights', (req, res) => {
     console.log('changing role rights for selected profile');
     var Object = req.body;
-    //helper function
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.updateRoleandRights(Object, res);
 })
 
 

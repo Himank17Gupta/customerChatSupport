@@ -12,7 +12,7 @@ route.post('/systemLogin', async (req, res) => {
             count = 0;
         result = userOperations.search(Object, res);
         result.then(data => {
-            console.log('14', data);
+            //  console.log('14', data);
             if (count == 2 && value == false) {
                 res.send('Invalid username or password');
             } else if (value != true) {
@@ -22,7 +22,7 @@ route.post('/systemLogin', async (req, res) => {
         });
         result = supportOperations.search(Object, res);
         result.then(data => {
-            console.log('21', data);
+            //  console.log('21', data);
             if (count == 2 && value == false) {
                 res.send('Invalid username or password');
             } else if (value != true) {
@@ -32,7 +32,7 @@ route.post('/systemLogin', async (req, res) => {
         });
         result = adminOperations.search(Object, res);
         result.then(data => {
-            console.log('28', data);
+            // console.log('28', data);
             if (count == 2 && value == false) {
                 res.send('Invalid username or password');
             } else if (value != true) {
@@ -41,7 +41,7 @@ route.post('/systemLogin', async (req, res) => {
             }
         });
 
-        console.log(value, count);
+        // console.log(value, count);
     }),
 
     route.post('/authLogin', (req, res) => {

@@ -85,15 +85,45 @@ const adminOperations = {
 
     updateRoleandRights(Object, res) {
         console.log('updating roles and rights');
-        //
-        //
-        //
+        //for support
+        if (Object.role == 'support') {
+            supportCollection.updateOne({
+                '_id': Object.Id
+            }, {
+                $push: {
+                    rights: Object.newRight
+                }
+            }, (err, doc) => {
+                if (err) {
+                    res.send('Error During adding right ', err);
+                } else {
+                    console.log('right added');
+                    res.send("added right");
+                }
+            })
+        } else if (Object.role == 'user') {
+            userCollection.updateOne({
+                '_id': Object.Id
+            }, {
+                $push: {
+                    rights: Object.newRight
+                }
+            }, (err, doc) => {
+                if (err) {
+                    res.send('Error During adding right ', err);
+                } else {
+                    console.log('right added');
+                    res.send("added right");
+                }
+            })
+        }
+
     },
 
     deleteAdmin(Object, res) {
         console.log('doing admin delete');
         adminCollection.deleteOne({
-            name: Object.name
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -108,7 +138,7 @@ const adminOperations = {
     deleteSupport(Object, res) {
         console.log('doing support delete');
         supportCollection.deleteOne({
-            name: Object.name
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
@@ -123,7 +153,7 @@ const adminOperations = {
     deleteUser(Object, res) {
         console.log('doing user delete');
         userCollection.deleteOne({
-            name: Object.name
+            'name': Object.name
         }, (err, doc) => {
             if (err) {
                 res.send('Something went Wrong');
