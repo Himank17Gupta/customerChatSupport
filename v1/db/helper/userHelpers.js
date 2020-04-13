@@ -5,25 +5,27 @@ const userCollection = require('../model/user');
 
 const userOperations = {
 
-    search(Object, res) {
+    async search(Object, res) {
+        var trigg = "false";
         console.log('searching user');
-        adminCollection.findOne({
+        await userCollection.findOne({
             'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
-                //   res.send('Invalid User Credentials');
+                trigg = false;
             } else if (doc) {
                 if (doc.password == Object.password) {
-                    //res.send(doc);
-                    return doc;
+                    res.send(doc);
+                    trigg = true;
                 } else {
-                    //res.send('Invalid User Credentials');
+                    trigg = false;
                 }
             } else {
-                //  res.send('Invalid User Credentials');
+                trigg = false;
             }
         });
+        return trigg;
     },
 
     isReconnect(Object, res) {

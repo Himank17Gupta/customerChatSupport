@@ -5,25 +5,30 @@ const userCollection = require('../model/user');
 
 const supportOperations = {
 
-    search(Object, res) {
+    async search(Object, res) {
+        var trigg = "false";
         console.log('searching support');
-        adminCollection.findOne({
+        await supportCollection.findOne({
             'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
+                trigg = false;
                 //   res.send('Invalid User Credentials');
             } else if (doc) {
                 if (doc.password == Object.password) {
-                    //res.send(doc);
-                    return doc;
+                    res.send(doc);
+                    trigg = true;
                 } else {
+                    trigg = false;
                     //res.send('Invalid User Credentials');
                 }
             } else {
+                trigg = false;
                 //  res.send('Invalid User Credentials');
             }
         });
+        return trigg;
     },
 
     getAllActiveSupport(Object, res) {
@@ -46,7 +51,7 @@ const supportOperations = {
     },
 
     getAllUsersinQueue(Object, res) {
-        supportCollection.findById({}, (err, doc) => {
+        supportCollection.findById(Object.support_id, (err, doc) => {
             if (err) {
                 res.json('Something went Wrong');
                 console.log('Error during getAllUsersinQueue List');

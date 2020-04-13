@@ -21,6 +21,8 @@ const adminOperations = {
 
     addSupport(Object, res) {
         console.log('adding support');
+        Object.creationDate = Date.now();
+        Object.role = "support";
         supportCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
@@ -33,6 +35,8 @@ const adminOperations = {
 
     addUser(Object, res) {
         console.log('adding user');
+        Object.creationDate = Date.now();
+        Object.role = "user";
         userCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
@@ -44,37 +48,37 @@ const adminOperations = {
     },
 
 
-    search(Object, res) {
+    async search(Object, res) {
+        var trigg = "false";
         console.log('searching admin');
-        adminCollection.findOne({
+        await adminCollection.findOne({
             'name': Object.name
         }, (err, doc) => {
             if (err) {
                 console.log('err is :', err);
-                res.send('Invalid User Credentials');
+                trigg = false;
             } else if (doc) {
                 if (doc.password == Object.password) {
                     res.send(doc);
-                    //return doc;
+                    trigg = false;
                 } else {
-                    res.send('Invalid User Credentials');
+                    trigg = false;
                 }
             } else {
-                res.send('Invalid User Credentials');
+                trigg = false;
             }
         });
+        return trigg
     },
 
     getProfileDetails(Object, res) {
         console.log('getting profile details');
-        //
-        //
-        //
+
+
     },
 
     getChatRecord(Object, res) {
         console.log('getting chat record');
-        //
         //
         //
     },
@@ -103,7 +107,7 @@ const adminOperations = {
 
     deleteSupport(Object, res) {
         console.log('doing support delete');
-        adminCollection.deleteOne({
+        supportCollection.deleteOne({
             name: Object.name
         }, (err, doc) => {
             if (err) {
@@ -118,7 +122,7 @@ const adminOperations = {
 
     deleteUser(Object, res) {
         console.log('doing user delete');
-        adminCollection.deleteOne({
+        userCollection.deleteOne({
             name: Object.name
         }, (err, doc) => {
             if (err) {
@@ -142,7 +146,6 @@ module.exports = adminOperations;
 // register support
 // register admin
 // get details of users/support
-// get user/support details
 // delete user 
 // delete support
 // get chat records

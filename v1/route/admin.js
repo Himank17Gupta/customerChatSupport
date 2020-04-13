@@ -14,16 +14,16 @@ route.post('/userRegister', (req, res) => {
     console.log('Registering User');
     var Object = req.body;
     console.log('request is:', Object);
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.add(Object,res);
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.addUser(Object, res);
 })
 
 route.post('/supportRegister', (req, res) => {
     console.log('adding support');
     var Object = req.body;
     console.log('request is:', Object);
-    // var adminOperations=require('../db/helpers/adminOperations');
-    // adminOperations.add(Object,res);
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.addSupport(Object, res);
 })
 
 route.post('/removeUser', (req, res) => {

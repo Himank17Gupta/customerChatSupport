@@ -4,25 +4,44 @@ var userOperations = require("../db/helper/userHelpers");
 var supportOperations = require("../db/helper/supportHelpers");
 var adminOperations = require("../db/helper/adminHelpers");
 
-route.post('/systemLogin', (req, res) => {
+route.post('/systemLogin', async (req, res) => {
         console.log('logging in');
         var Object = req.body;
         console.log('request is:', Object);
-        var result = userOperations.search(Object, res);
-        if (result) {
-            res.send(result);
-        }
+        var result, value = false,
+            count = 0;
+        result = userOperations.search(Object, res);
+        result.then(data => {
+            console.log('14', data);
+            if (count == 2 && value == false) {
+                res.send('Invalid username or password');
+            } else if (value != true) {
+                value = data;
+                count++;
+            }
+        });
         result = supportOperations.search(Object, res);
-        if (result) {
-            res.send(result);
-        }
+        result.then(data => {
+            console.log('21', data);
+            if (count == 2 && value == false) {
+                res.send('Invalid username or password');
+            } else if (value != true) {
+                value = data;
+                count++;
+            }
+        });
         result = adminOperations.search(Object, res);
-        if (result) {
-            res.send(result);
-        }
+        result.then(data => {
+            console.log('28', data);
+            if (count == 2 && value == false) {
+                res.send('Invalid username or password');
+            } else if (value != true) {
+                value = data;
+                count++;
+            }
+        });
 
-        //res.send("Invalid Login credentials");
-
+        console.log(value, count);
     }),
 
     route.post('/authLogin', (req, res) => {
