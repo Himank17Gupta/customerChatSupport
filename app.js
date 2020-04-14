@@ -32,16 +32,31 @@ app.use((req, res) => res.send('invalid request configured'));
 
 io.on('connection', (socket) => {
 	console.log(socket.id);
-	console.log('New Connection Established: ', socket.request.connection._peername +
-		' Total number of connections:', io.sockets.server.engine.clientsCount);
+	console.log('New Connection Established: ', socket.request.connection._peername + ' Total number of connections:', io.sockets.server.engine.clientsCount);
 
-	//fn for handling and assigning support id to new conection;
-	socket.on('message', (data) => {
-		//socketOperations.privateMessage(data);
+	//(//also think about setting a map of user_id with socket_id, as will be very handy then//)//
+	socket.on('Validate_connection', (data) => {
+		// data._id will tell if user or support, accordingly set socket ID in the schema,
+		// if user 
+		//fn for handling and assigning support id to new conection;
+		// get list of all active support, find one with least userQueue, 
+		// assign support ID assigned to that support profile with that of user and to reconnectid as well,
+		// also add the user._id to userQueue of that support profile.
+		// else if support set active true;
 	});
 
-	socket.on('disconnect', () => console.log('connection gone'));
 
+	socket.on('message', (data) => {
+		//socketOperations.privateMessage(data,data.sender,data.reciever);
+	});
+
+	socket.on('disconnect', (data) => {
+		// map disconnecting socket 
+		//if user 
+		// remove from userQueue of support, set socketID as null, set is Active as false, set reconnect id false as well;
+		//if support 
+		// set is Active false, run validate_connection for user function again
+	});
 })
 
 var server = app = app.listen(PORT, () => {
