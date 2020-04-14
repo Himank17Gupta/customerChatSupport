@@ -7,7 +7,7 @@ var mapCollectionIDwithSocketID = {};
 const socketOperations = {
 
 
-    getRoleOnConnect(id) {
+    async getRoleOnConnect(id) {
 
         await supportCollection.findById(id, (err, data) => {
             if (err) {
@@ -27,7 +27,7 @@ const socketOperations = {
     },
 
 
-    getSuitableActiveSupport() {
+    async getSuitableActiveSupport() {
         var activeSupport = [];
         await supportCollection.find({
             'isActiveNow': true
@@ -49,7 +49,7 @@ const socketOperations = {
 
 
     },
-    setSupportActive(id, value) {
+    async setSupportActive(id, value) {
         supportCollection.updateOne({
             "_id": id
         }, {
@@ -67,7 +67,7 @@ const socketOperations = {
 
     },
 
-    mapSocketIdwithUserId(uid, socketId, opn) {
+    async mapSocketIdwithUserId(uid, socketId, opn) {
         if (opn == "add") {
             mapCollectionIDwithSocketID[uid] = socketId;
         } else if (opn == "remove") {
@@ -75,7 +75,7 @@ const socketOperations = {
         }
     },
 
-    assignSupportToUser(uid, sid, socketId) {
+    async assignSupportToUser(uid, sid, socketId) {
         await userCollection.updateOne({
             "_id": uid
         }, {
@@ -92,7 +92,7 @@ const socketOperations = {
         })
     },
 
-    removeSupportAssignedToUser(uid) {
+    async removeSupportAssignedToUser(uid) {
         await userCollection.updateOne({
             "_id": uid
         }, {
@@ -108,7 +108,8 @@ const socketOperations = {
             }
         })
     },
-    getAssignedSuppportId(uid) {
+
+    async getAssignedSuppportId(uid) {
         await userCollection.findById(uid, (err, doc) => {
             if (err) {
                 console.log(err);
@@ -118,12 +119,13 @@ const socketOperations = {
         })
     },
 
-    updateSupportQueue(sid, uid, opn) {
+    async updateSupportQueue(sid, uid, opn) {
         //opn == add/remove
     },
-    onDisconnect() {
 
-    }
+    async onDisconnect() {
+
+    },
 
 
 }
