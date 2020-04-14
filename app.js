@@ -37,12 +37,24 @@ io.on('connection', (socket) => {
 	//(//also think about setting a map of user_id with socket_id, as will be very handy then//)//
 	socket.on('Validate_connection', (data) => {
 		// data._id will tell if user or support, accordingly set socket ID in the schema,
-		// if user 
-		//fn for handling and assigning support id to new conection;
-		// get list of all active support, find one with least userQueue, 
-		// assign support ID assigned to that support profile with that of user and to reconnectid as well,
-		// also add the user._id to userQueue of that support profile.
-		// else if support set active true;
+		var role = socketOperations.getRoleOnConnect(data.id);
+		// if user
+		if (role == 'user') {
+			// fn for handling and assigning support id to new conection,
+
+			// get list of all active support, find one with least userQueue,
+			var SupportId = socketOperations.getSuitableActiveSupport();
+			// assign support ID assigned to that support profile with that of user and to reconnectid as well,
+			assignSupporttoUser(data.id, SupportId, socket.id);
+			// also add the user._id to userQueue of that support profile.
+			updateSupportQueue(SupportId, data.id);
+
+		} else if (role == "support") {
+			// set active true;
+			socketOperations.setSupportActive(data.id);
+		}
+		socketOperations.mapSocketIdwithUserId(data.id, socket.id);
+
 	});
 
 

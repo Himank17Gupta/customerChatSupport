@@ -2,26 +2,81 @@ const adminCollection = require('../model/admin');
 const supportCollection = require('../model/support');
 const userCollection = require('../model/user');
 
+var mapCollectionIDwithSocketID = {};
 
 const socketOperations = {
 
 
-    onConnectSetSocketID() {
+    getRoleOnConnect(id) {
+
+        await supportCollection.findById(id, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else if (data) {
+                return data.role;
+            }
+        })
+        await userCollection.findById(id, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else if (data) {
+                return data.role;
+            }
+        })
 
     },
-    getAllActiveSupport() {
+
+
+    getSuitableActiveSupport() {
+        var activeSupport = [];
+        await supportCollection.find({
+            'isActiveNow': true
+        }, {
+            '_id': 1,
+            'userQueue': 1
+        }, (err, doc) => {
+            if (err) {
+                console.log(err);
+                return null;
+            }
+            if (doc) {
+                console.log(doc);
+
+                //loop over doc and find object with min userQueue length,  return _id for that object;
+                //return _id;
+            }
+        });
+
 
     },
-    getSupportWithMinConnectedUsers() {
+    setSupportActive(id) {
+        supportCollection.updateOne({
+            "_id": id
+        }, {
+            $set: {
+                isActiveNow: true
+            }
+        }, (err, doc) => {
+            if (err) {
+                console.log(err);
+                return 0;
+            } else {
+                return 1;
+            }
+        })
 
     },
-    mapSocketIdwithUserId() {
+    mapSocketIdwithUserId(uid, socketId) {
+        mapCollectionIDwithSocketID[uid] = socketId;
+    },
+    assignSupporttoUser(uid, sid, socketId) {
 
     },
-    establishConnectionIandJ() {
+    updateSupportQueue(sid, uid) {
 
     },
-    onDisconnectRemoveSocketID() {
+
+    onDisconnect() {
 
     }
 
