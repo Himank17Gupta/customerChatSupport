@@ -49,12 +49,12 @@ const socketOperations = {
 
 
     },
-    setSupportActive(id) {
+    setSupportActive(id, value) {
         supportCollection.updateOne({
             "_id": id
         }, {
             $set: {
-                isActiveNow: true
+                isActiveNow: value
             }
         }, (err, doc) => {
             if (err) {
@@ -66,16 +66,61 @@ const socketOperations = {
         })
 
     },
-    mapSocketIdwithUserId(uid, socketId) {
-        mapCollectionIDwithSocketID[uid] = socketId;
-    },
-    assignSupporttoUser(uid, sid, socketId) {
 
+    mapSocketIdwithUserId(uid, socketId, opn) {
+        if (opn == "add") {
+            mapCollectionIDwithSocketID[uid] = socketId;
+        } else if (opn == "remove") {
+            delete mapCollectionIDwithSocketID.uid;
+        }
     },
-    updateSupportQueue(sid, uid) {
 
+    assignSupportToUser(uid, sid, socketId) {
+        await userCollection.updateOne({
+            "_id": uid
+        }, {
+            $set: {
+                reconnectId: sid
+            }
+        }, (err, doc) => {
+            if (err) {
+                console.log(err);
+                return 0;
+            } else {
+                return 1;
+            }
+        })
     },
 
+    removeSupportAssignedToUser(uid) {
+        await userCollection.updateOne({
+            "_id": uid
+        }, {
+            $set: {
+                reconnectId: null
+            }
+        }, (err, doc) => {
+            if (err) {
+                console.log(err);
+                return 0;
+            } else if (doc) {
+                return 1;
+            }
+        })
+    },
+    getAssignedSuppportId(uid) {
+        await userCollection.findById(uid, (err, doc) => {
+            if (err) {
+                console.log(err);
+            } else if (doc) {
+                return doc.reconnectId;
+            }
+        })
+    },
+
+    updateSupportQueue(sid, uid, opn) {
+        //opn == add/remove
+    },
     onDisconnect() {
 
     }

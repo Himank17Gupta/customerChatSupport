@@ -45,15 +45,15 @@ io.on('connection', (socket) => {
 			// get list of all active support, find one with least userQueue,
 			var SupportId = socketOperations.getSuitableActiveSupport();
 			// assign support ID assigned to that support profile with that of user and to reconnectid as well,
-			assignSupporttoUser(data.id, SupportId, socket.id);
+			socketOperations.assignSupportToUser(data.id, SupportId, socket.id);
 			// also add the user._id to userQueue of that support profile.
-			updateSupportQueue(SupportId, data.id);
+			socketOperations.updateSupportQueue(SupportId, data.id, 'add');
 
 		} else if (role == "support") {
 			// set active true;
-			socketOperations.setSupportActive(data.id);
+			socketOperations.setSupportActive(data.id, true);
 		}
-		socketOperations.mapSocketIdwithUserId(data.id, socket.id);
+		socketOperations.mapSocketIdwithUserId(data.id, socket.id, 'add');
 
 	});
 
@@ -62,12 +62,18 @@ io.on('connection', (socket) => {
 		//socketOperations.privateMessage(data,data.sender,data.reciever);
 	});
 
+
 	socket.on('disconnect', (data) => {
-		// map disconnecting socket 
-		//if user 
-		// remove from userQueue of support, set socketID as null, set is Active as false, set reconnect id false as well;
-		//if support 
-		// set is Active false, run validate_connection for user function again
+		var role2 = socketOperations.getRoleOnConnect(data.id);
+		if (role2 == 'user') {
+			var SupportId2 = socketOperations.getAssignedSuppportId(data.id);
+			socketOperations.updateSupportQueue(SupportId2, data.id, 'remove');
+			socketOperations.removeSupportAssignedToUser(data.id);
+		} else if (role == "support") {
+			socketOperations.setSupportActive(data.id, false);
+			//	run validate_connection for user function again
+		}
+		socketOperations.mapSocketIdwithUserId(data.id, socket.id, 'remove');
 	});
 })
 
