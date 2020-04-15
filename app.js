@@ -26,6 +26,10 @@ app.use('/admin', require('./v1/route/admin'));
 app.use('/user', require('./v1/route/user'));
 app.use('/support', require('./v1/route/support'));
 
+app.post('/test', (req, res) => {
+	socketOperations.getSuitableActiveSupport();
+})
+
 app.use((req, res) => res.send('invalid request configured'));
 
 

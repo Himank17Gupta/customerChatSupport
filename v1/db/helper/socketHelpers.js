@@ -28,7 +28,9 @@ const socketOperations = {
 
 
     async getSuitableActiveSupport() {
-        var activeSupport = [];
+        var activeSupport;
+        var min = 1000;
+        console.log('getting active support');
         await supportCollection.find({
             'isActiveNow': true
         }, {
@@ -41,9 +43,13 @@ const socketOperations = {
             }
             if (doc) {
                 console.log(doc);
-
-                //loop over doc and find object with min userQueue length,  return _id for that object;
-                //return _id;
+                doc.forEach(obj => {
+                    if (obj.userQueue.length < min) {
+                        min = obj.userQueue.length;
+                        activeSupport = obj._id;
+                    }
+                })
+                return activeSupport;
             }
         });
 
@@ -121,6 +127,23 @@ const socketOperations = {
 
     async updateSupportQueue(sid, uid, opn) {
         //opn == add/remove
+        if (opn == "add") {
+            await supportCollection.update({
+                "_id": sid
+            }, {
+                $push: {
+                    userQueue: uid
+                }
+            }, (err, doc) => {
+                if (err) {
+                    console.log('Error During pushing uid ', err);
+                } else {
+                    console.log('uid added');
+                }
+            })
+        } else if (opn == "remove") {
+            // extract array from collection,copy in a local array, remove the object with uid in local array, set the local array to support collection 
+        }
     },
 
     async onDisconnect() {
