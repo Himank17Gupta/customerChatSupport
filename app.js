@@ -63,7 +63,10 @@ io.on('connection', (socket) => {
 
 
 	socket.on('message', (data) => {
+		var socketIdofSender = socketOperations.getSocketIdWithID(data.sender);
+		var socketIdofReciever = socketOperations.getSocketIdWithID(data.receiver);
 		//socketOperations.privateMessage(data,data.sender,data.reciever);
+		//	socket.to(socketIdofReciever,data.msg,data.sender);
 	});
 
 

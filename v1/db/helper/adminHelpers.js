@@ -23,6 +23,7 @@ const adminOperations = {
         console.log('adding support');
         Object.creationDate = Date.now();
         Object.role = "support";
+        Object.isActiveNow = false;
         supportCollection.create(Object, err => {
             if (err) {
                 res.send('Error During Add');
@@ -72,8 +73,26 @@ const adminOperations = {
     },
 
     getProfileDetails(Object, res) {
-        console.log('getting profile details');
+        console.log('getting profile details for id', Object.id);
 
+        supportCollection.findById(Object.id, (err, doc) => {
+            if (doc) {
+                console.log("support ");
+                res.send(doc);
+            }
+        });
+        userCollection.findById(Object.id, (err, doc) => {
+            if (doc) {
+                console.log("user ");
+                res.send(doc);
+            }
+        });
+        adminCollection.findById(Object.id, (err, doc) => {
+            if (doc) {
+                console.log("admin ");
+                res.send(doc);
+            }
+        });
 
     },
 

@@ -81,6 +81,10 @@ const socketOperations = {
         }
     },
 
+    getSocketIdWithID(id) {
+        return mapCollectionIDwithSocketID[id];
+    },
+
     async assignSupportToUser(uid, sid, socketId) {
         await userCollection.updateOne({
             "_id": uid

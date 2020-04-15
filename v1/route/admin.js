@@ -26,6 +26,13 @@ route.post('/supportRegister', (req, res) => {
     adminOperations.addSupport(Object, res);
 })
 
+route.post('/profileInformation', (req, res) => {
+    console.log('fetching profile information');
+    var Object = req.body;
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.getProfileDetails(Object, res);
+})
+
 route.post('/removeUser', (req, res) => {
     console.log('adding admin');
     var Object = req.body;
