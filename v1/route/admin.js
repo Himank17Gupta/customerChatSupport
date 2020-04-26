@@ -26,6 +26,14 @@ route.post('/supportRegister', (req, res) => {
     adminOperations.addSupport(Object, res);
 })
 
+route.post('/tutorRegister', (req, res) => {
+    console.log('Registering tutor');
+    var Object = req.body;
+    console.log('request is:', Object);
+    var adminOperations = require('../db/helper/adminHelpers');
+    adminOperations.addTutor(Object, res);
+})
+
 route.post('/profileInformation', (req, res) => {
     console.log('fetching profile information');
     var Object = req.body;

@@ -3,7 +3,7 @@ var route = express.Router();
 var testOperations = require("../db/helper/testHelpers");
 var questionOperations = require("../db/helper/questionHelpers");
 
-route.post('createTest', (req, res) => {
+route.post('/createTest', (req, res) => {
     console.log("creating new test");
     console.log("request object", req.body);
     testOperations.createNewTest(req.body, res);

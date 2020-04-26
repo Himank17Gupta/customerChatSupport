@@ -5,6 +5,9 @@ var question = new Schema({
     'questionName': {
         type: String
     },
+    'description': {
+        type: String
+    },
     'status': {
         type: String
     },
@@ -20,7 +23,7 @@ var question = new Schema({
     },
     'tests': {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'tutorCollection'
+        ref: 'testCollection'
     }
 });
 

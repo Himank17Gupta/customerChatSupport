@@ -161,7 +161,7 @@ const socketOperations = {
 
             // extract array from collection,copy in a local array, remove the object with uid in local array, set the local array to support collection 
             let localarray = [];
-            await supportCollection.findById(sid, (err, doc) => {
+            await supportCollection.findById(sid, async (err, doc) => {
                 if (err) {
                     console.log('Error During pushing uid ', err);
                 } else {

@@ -1,7 +1,7 @@
 const testCollection = require('../model/test');
-const answerCollection = require('../model/user');
+const submissionCollection = require('../model/submissions');
 const questionCollection = require('../model/question');
-
+const tutorCollection = require('../model/tutor');
 
 const testOperations = {
 
@@ -10,38 +10,85 @@ const testOperations = {
         Object.creationDate = Date.now();
         //if random questions TRUE, then fill question array with random 5 questions
 
-        testCollection.create(Object, err => {
+        testCollection.create(Object, (err, doc) => {
             if (err) {
                 res.send('Error During Add');
                 console.log('Error During Add ', err);
-            } else {
-                res.send('Test Record added...');
+            } else if (doc) {
+                tutorCollection.findByIdAndUpdate(Object.author, {
+                    $push: {
+                        tests: doc._id
+                    }
+                }, (err, doc) => {
+                    if (err) {
+                        console.log('Error During Add ', err);
+                    } else if (doc) {
+                        res.send('Test Record added...');
+                    }
+                })
+
             }
         })
     },
 
     addQuestionInTest(Object, res) {
         console.log("addQuestionsinTest");
-        testCollection.findByIdAndUpdate(Object.id, {
+        testCollection.findByIdAndUpdate(Object.testId, {
             $push: {
-                questions: res.questionId
+                question: Object.questionId
             }
         }, (err, doc) => {
             if (err) {
                 console.log('Error During pushing question ', err);
-            } else {
-                res.send('question added');
+            } else if (doc) {
+                questionCollection.findByIdAndUpdate(Object.questionId, {
+                    $push: {
+                        tests: Object.testId
+                    }
+                }, (err, doc) => {
+                    if (err) {
+                        console.log('Error During pushing question ', err);
+                    } else {
+                        res.send('question added');
+                    }
+                });
             }
         })
     },
 
-    deleteQuestionInTest() {
+    async deleteQuestionInTest(Object, res) {
+        console.log("deleteQuestionsinTest");
+        var localArray = [];
+        await testCollection.findById(Object.testId, (err, res) => {
+            if (err) {
+                console.log('Error During deleting question ', err);
+            } else if (doc) {
+                localArray = doc.questions;
+                for (let i = 0; i < localArray.length; i++) {
+                    if (localArray[i] == Object.questionId) {
+                        localArray.splice(i, 1);
+                    }
+                }
 
+            }
+        });
+
+        await testCollection.findByIdAndUpdate(Object.testId, {
+            $set: {
+                questions: localArray
+            }
+        }, (err, doc) => {
+            if (err) {
+                console.log('Error During deleting question ', err);
+            } else {
+                res.send('question added');
+            }
+        });
     },
 
-    testDetails() {
+    testDetails(Object, res) {
         console.log("fetching test details");
-        testCollection.findById(Object.id,
+        testCollection.findById(Object.testId,
             (err, doc) => {
                 if (err) {
                     console.log('Error During fetching test ', err);
@@ -54,8 +101,8 @@ const testOperations = {
 
     submitTest(Object, res) {
         console.log("submitting test");
-        Object.creationDate = Date.now();
-        answerCollection.create(Object,
+        Object.submissionDate = Date.now();
+        submissionCollection.create(Object,
             (err, doc) => {
                 if (err) {
                     console.log('Error During submitting test ', err);
@@ -68,7 +115,10 @@ const testOperations = {
 
     getSubmittedTest(Object, res) {
         console.log("fetching submitted test");
-        answerCollection.findById(Object.id,
+        submissionCollection.findOne({
+                "testId": Object.testId,
+                "submittedBy": Object.userId
+            },
             (err, doc) => {
                 if (err) {
                     console.log('Error During fetching submitted test ', err);
@@ -81,25 +131,13 @@ const testOperations = {
 
     async getResultforTest(Object, res) {
         console.log('result for submission');
-        var submission = await answerCollection.findById(Object.id, (err, doc) => {
-            if (err) {
-                console.log("error occured", err);
-                return undefined;
-            } else if (doc) {
-                return doc;
-            }
-        });
 
-        var testId = submission.testId;
-        var submittedAnswers = submission.answers; //[{"qid":"ans"},...,]
-        var score = [];
         //foreach
         //   // qid in submittedAns, get correctAnswer from the questionCollection
         //   // compare it with the submittedAns mapped with qid,
         //   // if same , the add {"qid":"correct"} in score, 
         //   // else add {"qid":"incorrect"}
 
-        res.send(score);
     },
 
 }

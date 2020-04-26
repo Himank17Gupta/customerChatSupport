@@ -1,7 +1,7 @@
 const adminCollection = require('../model/admin');
 const supportCollection = require('../model/support');
 const userCollection = require('../model/user');
-
+const tutorCollection = require('../model/tutor');
 
 const adminOperations = {
 
@@ -44,6 +44,20 @@ const adminOperations = {
                 console.log('Error During Add ', err);
             } else {
                 res.send('User Record added...');
+            }
+        })
+    },
+
+    addTutor(Object, res) {
+        console.log('adding tutor');
+        Object.creationDate = Date.now();
+        Object.role = "tutor";
+        tutorCollection.create(Object, err => {
+            if (err) {
+                res.send('Error During Add');
+                console.log('Error During Add ', err);
+            } else {
+                res.send('Tutor Record added...');
             }
         })
     },

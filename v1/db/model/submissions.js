@@ -17,7 +17,7 @@ var submission = new Schema({
     'submissionDate': {
         type: Date
     },
-    'answer': {},
+    'answer': [],
     'score': {
         type: Number
     }

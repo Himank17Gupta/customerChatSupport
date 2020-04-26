@@ -25,10 +25,8 @@ app.use('/auth', require('./v1/route/authservice'));
 app.use('/admin', require('./v1/route/admin'));
 app.use('/user', require('./v1/route/user'));
 app.use('/support', require('./v1/route/support'));
-
-app.post('/test', (req, res) => {
-	socketOperations.getSuitableActiveSupport();
-})
+app.use('/test', require('./v1/route/testservice'));
+app.use('/question', require('./v1/route/questionservice'));
 
 app.use((req, res) => res.send('invalid request configured'));
 

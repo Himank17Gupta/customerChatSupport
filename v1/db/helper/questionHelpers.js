@@ -1,5 +1,5 @@
 const testCollection = require('../model/test');
-const answerCollection = require('../model/user');
+const answerCollection = require('../model/answers');
 const questionCollection = require('../model/question');
 
 
@@ -8,14 +8,24 @@ const questionOperations = {
     createNewQuestion(Object, res) {
         console.log('creatingnewquestion');
         Object.creationDate = Date.now();
-        //if random questions TRUE, then fill question array with random 5 questions
-
-        questionCollection.create(Object, err => {
+        var rightAnswer = Object.rightAnswer;
+        delete Object["rightAnswer"];
+        questionCollection.create(Object, (err, doc) => {
             if (err) {
                 res.send('Error During Add');
                 console.log('Error During Add ', err);
-            } else {
-                res.send('Test Record added...');
+            } else if (doc) {
+                answerCollection.create({
+                    'questionId': doc._id,
+                    'rightAnswer': rightAnswer
+                }, (err, doc) => {
+                    if (err) {
+                        res.send('Error During Add');
+                        console.log('Error During Add ', err);
+                    } else if (doc) {
+                        res.send('Test,answer record added...');
+                    }
+                })
             }
         })
     },

@@ -7,12 +7,13 @@ var tutor = new Schema({
     'tutorName': {
         type: String
     },
+    "password": {
+        type: String
+    },
     'role': {
         type: String
     },
-    'rights': {
-        type: String
-    },
+    'rights': [],
     'tests': [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'testCollection'
