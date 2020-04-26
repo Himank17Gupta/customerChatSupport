@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
 			// get list of all active support, find one with least userQueue,
 			var SupportId = socketOperations.getSuitableActiveSupport();
 			// assign support ID assigned to that support profile with that of user and to reconnectid as well,
-			socketOperations.assignSupportToUser(data.id, SupportId, socket.id);
+			socketOperations.assignSupportToUser(data.id, SupportId);
 			// also add the user._id to userQueue of that support profile.
 			socketOperations.updateSupportQueue(SupportId, data.id, 'add');
 
@@ -62,7 +62,18 @@ io.on('connection', (socket) => {
 	});
 
 
-	socket.on('message', (data) => {
+	socket.on('message_from_customer', (data) => { //	data-->{senderId,text:{"msg",timestamp}}
+		var socketIdofSender = socketOperations.getSocketIdWithID(data.senderId);
+		var suitableSupportID = socketOperations.retrieveSupportforUser(data.senderId);
+		var socketIdofReciever = socketOperations.getSocketIdWithID(suitableSupportID);
+		socket.to(socketIdofReciever).emit('messagefromcustomer', data);
+	});
+	socket.on('message_from_support', (data) => { //	data-->{recieverId(same as userID with which the message has been recieved),text:{"msg",timestamp}}
+		var socketIdofReciever = socketOperations.getSocketIdWithID(data.receiverId);
+		socket.to(socketIdofReciever).emit('messagefromSupport', data);
+	});
+
+	socket.on('message_from_support', (data) => { //	data-->{senderId,}
 		var socketIdofSender = socketOperations.getSocketIdWithID(data.sender);
 		var socketIdofReciever = socketOperations.getSocketIdWithID(data.receiver);
 		//socketOperations.privateMessage(data,data.sender,data.reciever);
@@ -79,6 +90,8 @@ io.on('connection', (socket) => {
 		} else if (role == "support") {
 			socketOperations.setSupportActive(data.id, false);
 			//	run validate_connection for user function again
+			//  run assign the userQueue to available support profiles
+
 		}
 		socketOperations.mapSocketIdwithUserId(data.id, socket.id, 'remove');
 	});

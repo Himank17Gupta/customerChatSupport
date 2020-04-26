@@ -85,7 +85,7 @@ const socketOperations = {
         return mapCollectionIDwithSocketID[id];
     },
 
-    async assignSupportToUser(uid, sid, socketId) {
+    async assignSupportToUser(uid, sid) {
         await userCollection.updateOne({
             "_id": uid
         }, {
@@ -101,6 +101,18 @@ const socketOperations = {
             }
         })
     },
+    async retrieveSupportforUser(uid) {
+        await userCollection.findById(uid,
+            (err, doc) => {
+                if (err) {
+                    console.log(err);
+                    return 0;
+                } else if (doc) {
+                    return doc.reconnectId;
+                }
+            })
+    },
+
 
     async removeSupportAssignedToUser(uid) {
         await userCollection.updateOne({
@@ -146,7 +158,40 @@ const socketOperations = {
                 }
             })
         } else if (opn == "remove") {
+
             // extract array from collection,copy in a local array, remove the object with uid in local array, set the local array to support collection 
+            let localarray = [];
+            await supportCollection.findById(sid, (err, doc) => {
+                if (err) {
+                    console.log('Error During pushing uid ', err);
+                } else {
+                    localarray = doc.userQueue;
+
+                    for (let i = 0; i < localarray.length; i++) {
+                        if (localarray[i] == uid) {
+                            localarray.splice(i, 1);
+                        }
+                    }
+
+                    await supportCollection.updateOne({
+                        "_id": sid
+                    }, {
+                        $set: {
+                            userQueue: localarray
+                        }
+                    }, (err, doc) => {
+                        if (err) {
+                            console.log(err);
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    })
+
+
+                }
+            });
+
         }
     },
 
