@@ -15,7 +15,6 @@ var question = new Schema({
     'creationDate': {
         type: Date
     },
-    'answer': {},
     'maximumScore': {
         type: Number
     },
